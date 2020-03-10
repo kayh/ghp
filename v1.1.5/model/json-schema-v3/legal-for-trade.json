@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "actualVolume": {
+      "type": "integer",
+      "description": "# GER-TODO\r\n\r\nRealvolumen VMS#1 wenn VMS#1 = VMS420/520 Realvolumen = 000000 bei VMS#1 = VMS410/510\r\n[dm3]",
+      "maxLength": 5
+    },
+    "boxVolume": {
+      "type": "integer",
+      "description": "Boxvolumen = Länge x Breite x Höhe\r\n[dm3]",
+      "maxLength": 5
+    },
+    "volumeRatio": {
+      "type": "integer",
+      "description": "Realvolumen / Boxvolumen in % ganzzahlig"
+    },
+    "shape": {
+      "$ref": "shape-type.json",
+      "description": "Die Paketform."
+    },
+    "state": {
+      "$ref": "legal-for-trade-state.json"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Customs information",
+  "id": "LegalForTrade"
+}

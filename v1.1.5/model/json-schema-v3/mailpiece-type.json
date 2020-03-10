@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "string",
+  "enum": [
+    "UNKNOWN",
+    "LETTER",
+    "LETTER_BUNDLE",
+    "FLAT",
+    "FLAT_BUNDLE",
+    "PARCEL"
+  ],
+  "id": "MailpieceType"
+}

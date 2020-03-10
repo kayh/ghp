@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "value": {
+      "type": "integer",
+      "description": "Actual weight in [g].",
+      "maxLength": 6
+    },
+    "state": {
+      "$ref": "weight-measurement-state.json"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Weight information with a corresponding status.",
+  "id": "Weight"
+}

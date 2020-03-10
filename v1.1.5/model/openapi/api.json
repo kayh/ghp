@@ -1,0 +1,212 @@
+{
+  "swagger": 2,
+  "info": {
+    "title": "cen-mc-rc stream API",
+    "description": "Interaction between Machine Control and Reading Coding System - CEN/TS 16238.",
+    "contact": {
+      "name": "Kay Herzam (Swiss Post)",
+      "email": "kay.herzam@post.ch"
+    },
+    "version": "1.1.5"
+  },
+  "host": "server:8080",
+  "basePath": "mqtt",
+  "paths": {
+    "cen-mc-rc/v1/machine/submit-mailpiece/{srcSystem}/{srcInstance}": {
+      "post": {
+        "summary": "ATG-3 Submit Mailpiece (Sensordaten empfangen)",
+        "description": "The Machine submits the recognized mailpiece attributes.",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/SubmitMailpiece"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/machine/update-mailpiece-attributes/{srcSystem}/{srcInstance}": {
+      "post": {
+        "summary": "ATG-5 Update Mailpiece Attributes (Sortierergebnis empfangen)",
+        "description": "The Machine reports new or changed attributes in order to update the mailpiece attribute database on the Coding System (e.g. indicating the sort bin). (Re-)Connected to ATG - The publisher needs to buffer all unsent messages for at least 1 day until the message is sent successfully to the ATG.",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/UpdateMailpieceAttributes"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/machine/request-mailpiece-attributes/{srcSystem}/{srcInstance}/{conversationId}": {
+      "post": {
+        "summary": "ATG-4 Request Mailpiece Attributes (Sortierziel berechnen)",
+        "description": "Request for the coding result (outlet group)",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          },
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "ID that will be included in the transmit-mailpiece-attributes topic in order to correlate the messages",
+            "type": "string",
+            "default": "12345"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/RequestMailpieceAttributes"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/coding/transmit-mailpiece-attributes/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": "ATG-4 Transmit Mailpiece Attributes (Sortierziel berechnen)",
+        "description": "The RC System returns mailpiece attributes to the Machine, either in response to a Submit Mailpiece or a Request Mailpiece Attributes. There may be multiple responses of Transmit Mailpiece Attributes for a single “Submit Mailpiece” message, e.g. partial OCR results followed with final VCS result.",
+        "tags": [
+          "coding"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ZDS"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          },
+          {
+            "name": "dstSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system receiving the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "dstInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance receiving the message",
+            "type": "string",
+            "default": "01"
+          },
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "ID from the request-mailpiece-attributes request for correlation",
+            "type": "string",
+            "default": "12345"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/TransmitMailpieceAttributes"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/coding/transmit-mailpiece-attributes/{srcSystem}/{srcInstance}": {
+      "post": {
+        "summary": "ATG-4 Transmit Mailpiece Attributes (Sortierziel berechnen)",
+        "description": "Trigger transmit-mailpiece-attributes event without request (no dstSystem and dstInstance parameters)",
+        "tags": [
+          "coding"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ZDS"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/TransmitMailpieceAttributes"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "$ref": [
+      "../ts/submit_mailpiece.ts",
+      "../ts/update_mailpiece_attributes.ts",
+      "../ts/transmit-mailpiece-attributes.ts",
+      "../ts/request-mailpiece-attributes.ts"
+    ]
+  }
+}

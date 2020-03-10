@@ -1,0 +1,90 @@
+{
+   "sourceId": "DWS01",
+   "mailpieceId": "993413796700000321",
+   "mpAttr": {
+      "preknowledge": {
+         "binOccupancy": {
+            "frontOverlappingLimitExceeded": false,
+            "multipleItemsDetected": false,
+            "emptyBinOccupied": false,
+            "conveyingAidDetected": false,
+            "backOverlappingLimitExceeded": false,
+            "binMultipleItemOccupied": false
+         },
+         "legalForTrade": {
+            "shape": "IRREGULAR",
+            "boxVolume": 9280,
+            "actualVolume": 3659,
+            "state": {
+               "dimensionError": false,
+               "storageError": false,
+               "conveyorSpeedError": false,
+               "weightError": false
+            },
+            "volumeRatio": 0
+         },
+         "multipleMailpiecdIdRecognized": false,
+         "weight": {
+            "state": {
+               "scaleDataFormatError": false,
+               "conveyorSpeedChangedDuringMeasurement": false,
+               "invalidMeasurement": false,
+               "conveyorSpeedOutOfMaxLimit": false,
+               "externalError": false,
+               "packageLengthError": false,
+               "underweight": true,
+               "overload": false,
+               "underload": false,
+               "alibiStorageAtScaleFailed": false,
+               "packageDistanceError": false,
+               "isLegalForTrade": false,
+               "overweight": false
+            },
+            "value": 860
+         },
+         "location": {
+            "face": "TOP",
+            "polygon": {
+               "dot": [{
+                  "x": -11,
+                  "y": 117
+               }, {
+                  "x": 2,
+                  "y": 455
+               }, {
+                  "x": 419,
+                  "y": 101
+               }, {
+                  "x": 432,
+                  "y": 439
+               }]
+            }
+         },
+         "dimension": {
+            "length": 429,
+            "width": 338,
+            "state": {
+               "measurementResult": "OK",
+               "itemSizeClassification": {
+                  "oversized": false,
+                  "undersized": false,
+                  "ok": true
+               },
+               "measurementRange": "INSIDE"
+            },
+            "height": 64
+         },
+         "barCodes": [{
+            "type": "CODE_128",
+            "value": "010780",
+            "status": "DETECTED_AND_RECOGNIZED"
+         }, {
+            "type": "CODE_128",
+            "value": "993413796700000321",
+            "status": "DETECTED_AND_RECOGNIZED"
+         }]
+      },
+      "type": "PARCEL"
+   },
+   "timestamp": "2019-09-02T14:12:32.7240451+02:00"
+}

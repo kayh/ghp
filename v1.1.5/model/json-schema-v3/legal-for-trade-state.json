@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "conveyorSpeedError": {
+      "type": "boolean",
+      "description": "Conveyor speed is out of tolerance.",
+      "required": true
+    },
+    "storageError": {
+      "type": "boolean",
+      "description": "Alibi storage error.",
+      "required": true
+    },
+    "dimensionError": {
+      "type": "boolean",
+      "description": "VMS data is not legal for trade.",
+      "required": true
+    },
+    "weightError": {
+      "type": "boolean",
+      "description": "Weight data not legal for trade.",
+      "required": true
+    }
+  },
+  "additionalProperties": false,
+  "description": "Detailed information on legal for trade relevant measurements.\r\n\r\n- If all flags are false, the measurements are legal for trade.\r\n- If only weightError is true, dimension measurement is legal for trade.\r\n- If only dimensionError is true, weight measurement is legal for trade.\r\n- Otherwise, measurements are not legal for trade.",
+  "id": "LegalForTradeState"
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "integer",
+      "description": "The destination sort code is the outlet group name (Virtuelles Ziel) assigned to the mail piece.\nSpecific values are defined on a per-program basis.",
+      "maxLength": 3
+    },
+    "rejectReasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "This string element contains a reason why the RC System was unable to determine a result.\nThe sorting machine needs to recognize and count the reject reason in order to\na) stop the induction when the reject reason occured max. times in a row\nb) generate live-data / statistics"
+    }
+  },
+  "required": [
+    "code"
+  ],
+  "additionalProperties": false,
+  "id": "AddressResult"
+}

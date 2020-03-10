@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "string",
+  "enum": [
+    "OK",
+    "NOK",
+    "NOT_RECOGNIZED"
+  ],
+  "description": "Measurement result state.\r\n\r\n- OK: Measurement VMS ok\r\n- NOK: Measurement VMS not ok\r\n- NOT_RECOGNIZED: No object recognized",
+  "id": "DimensionMeasurementResultType"
+}

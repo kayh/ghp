@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "mailpieceId": {
+      "type": "string",
+      "description": "Represents the national identifier for the mailpiece item.",
+      "pattern": "(98|99)[0-9]{16}"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "[extension]\n\nTimestamp of data collection.",
+      "format": "date-time"
+    },
+    "addressResult": {
+      "$ref": "address-result.json"
+    }
+  },
+  "required": [
+    "mailpieceId",
+    "timestamp"
+  ],
+  "additionalProperties": false,
+  "description": "This type contains the result for a mail piece that has been determined by the RC System.",
+  "id": "TransmitMailpieceAttributes"
+}

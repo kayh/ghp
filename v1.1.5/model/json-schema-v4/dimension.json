@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "length": {
+      "type": "integer",
+      "description": "Length in [mm]."
+    },
+    "width": {
+      "type": "integer",
+      "description": "Width in [mm]."
+    },
+    "height": {
+      "type": "integer",
+      "description": "Height in [mm]."
+    },
+    "state": {
+      "$ref": "dimension-measurement-state.json"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Parcel dimensions",
+  "id": "Dimension"
+}

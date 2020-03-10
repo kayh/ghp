@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "isLegalForTrade": {
+      "type": "boolean",
+      "description": "False: Weight is not legal for trade.",
+      "required": true
+    },
+    "packageDistanceError": {
+      "type": "boolean",
+      "required": true
+    },
+    "packageLengthError": {
+      "type": "boolean",
+      "required": true
+    },
+    "externalError": {
+      "type": "boolean",
+      "required": true
+    },
+    "invalidMeasurement": {
+      "type": "boolean",
+      "required": true
+    },
+    "overweight": {
+      "type": "boolean",
+      "description": "Weight higher than max. weight.",
+      "required": true
+    },
+    "underweight": {
+      "type": "boolean",
+      "description": "Weight lower than min weight.",
+      "required": true
+    },
+    "overload": {
+      "type": "boolean",
+      "required": true
+    },
+    "underload": {
+      "type": "boolean",
+      "required": true
+    },
+    "conveyorSpeedChangedDuringMeasurement": {
+      "type": "boolean",
+      "required": true
+    },
+    "conveyorSpeedOutOfMaxLimit": {
+      "type": "boolean",
+      "required": true
+    },
+    "alibiStorageAtScaleFailed": {
+      "type": "boolean",
+      "required": true
+    },
+    "scaleDataFormatError": {
+      "type": "boolean",
+      "required": true
+    }
+  },
+  "additionalProperties": false,
+  "id": "WeightMeasurementState"
+}

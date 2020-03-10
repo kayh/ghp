@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "measurementResult": {
+      "$ref": "dimension-measurement-result-type.json",
+      "required": true
+    },
+    "measurementRange": {
+      "$ref": "dimension-measurement-range-type.json",
+      "required": true
+    },
+    "itemSizeClassification": {
+      "$ref": "item-size-classification-type.json",
+      "required": true
+    }
+  },
+  "additionalProperties": false,
+  "description": "State of the measurement.",
+  "id": "DimensionMeasurementState"
+}

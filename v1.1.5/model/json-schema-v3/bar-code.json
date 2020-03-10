@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "type": {
+      "$ref": "bar-code-symbology.json",
+      "description": "Provides the valid symbologies of a barcode label."
+    },
+    "value": {
+      "type": "string",
+      "description": "This element contains the value of the barcode."
+    },
+    "status": {
+      "$ref": "bar-code-status.json",
+      "description": "This element contains the status of the barcode.",
+      "required": true
+    }
+  },
+  "additionalProperties": false,
+  "description": "This type contains a barcode.",
+  "id": "BarCode"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "type": {
+      "$ref": "mailpiece-type.json",
+      "description": "Defines the type of the mail item.\r\n\r\nWill be hardcoded to 'parcel'."
+    },
+    "preknowledge": {
+      "$ref": "recognition-result.json",
+      "description": "Provides preknowledge to the RC System, e.g. a barcode\r\nresult if a barcode reader is integrated into the machine."
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "additionalProperties": false,
+  "description": "This type is taken from CEN/TS 15448 and extended by a “preknowledge” element.\r\nThe type MailpieceAttrT specifies basic mailpiece attributes.",
+  "id": "MailpieceAttr"
+}

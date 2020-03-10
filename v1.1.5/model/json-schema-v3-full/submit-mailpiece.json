@@ -1,0 +1,425 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "mailpieceId": {
+      "type": "string",
+      "description": "Represents the national identifier for the mailpiece item.",
+      "pattern": "(98|99)[0-9]{16}",
+      "required": true
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "[extension]\r\n\r\nTimestamp of data collection.",
+      "format": "date-time",
+      "required": true
+    },
+    "sourceId": {
+      "type": "string",
+      "description": "Refers to a module id as event-source.  ",
+      "pattern": "[A-Z]{3}[0-9]{2}",
+      "required": true
+    },
+    "mpAttr": {
+      "description": "The MailpieceAttrT type is assigned to the element mp_attr. It provides basic\r\nmailpiece related information:\r\n\r\n- the kind of the mail item\r\n- the mailclass of the mail item; important for the ED because it and may affect the address recognition\r\n- the scanned faces of the mail item. The FaceSetT type is assigned to faces and allows providing a sequence of faces. \r\n   The FaceSetT types allows to link a face with the corresponding image by a page attribute.\r\n- a preknowledge result if a barcode reader or some other type of Enrichment Device is directly attached to the MC.\r\n   This result will be in accordance with the result type specified in the IC-ED interface.",
+      "$schema": "http://json-schema.org/draft-03/schema#",
+      "definitions": {},
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Defines the type of the mail item.\r\n\r\nWill be hardcoded to 'parcel'.",
+          "required": true,
+          "$schema": "http://json-schema.org/draft-03/schema#",
+          "definitions": {},
+          "type": "string",
+          "enum": [
+            "UNKNOWN",
+            "LETTER",
+            "LETTER_BUNDLE",
+            "FLAT",
+            "FLAT_BUNDLE",
+            "PARCEL"
+          ],
+          "id": "MailpieceType"
+        },
+        "preknowledge": {
+          "description": "Provides preknowledge to the RC System, e.g. a barcode\r\nresult if a barcode reader is integrated into the machine.",
+          "$schema": "http://json-schema.org/draft-03/schema#",
+          "definitions": {},
+          "type": "object",
+          "properties": {
+            "multipleMailpiecdIdRecognized": {
+              "type": "boolean",
+              "description": "If true, multiple identcodes were recognized by the camera."
+            },
+            "barCodes": {
+              "type": "array",
+              "items": {
+                "$schema": "http://json-schema.org/draft-03/schema#",
+                "definitions": {},
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "description": "Provides the valid symbologies of a barcode label.",
+                    "$schema": "http://json-schema.org/draft-03/schema#",
+                    "definitions": {},
+                    "type": "string",
+                    "enum": [
+                      "CODE_128",
+                      "DATA_MATRIX"
+                    ],
+                    "id": "BarCodeSymbology"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "This element contains the value of the barcode."
+                  },
+                  "status": {
+                    "description": "This element contains the status of the barcode.",
+                    "required": true,
+                    "$schema": "http://json-schema.org/draft-03/schema#",
+                    "definitions": {},
+                    "type": "string",
+                    "enum": [
+                      "NO_BARCODE",
+                      "DETECTED_AND_RECOGNIZED",
+                      "DETECTED_AND_NOT_RECOGNIZED"
+                    ],
+                    "id": "BarCodeStatus"
+                  }
+                },
+                "additionalProperties": false,
+                "description": "This type contains a barcode.",
+                "id": "BarCode"
+              },
+              "description": "[extension]\r\n\r\n# Code 128\r\na) Internationaler Barcode\r\n    Beispiel: EP923689367CH\r\n    Validierung: [A-Z]{2}[0-9]{9}[A-Z]{2} (13 Zeichen)\r\nb) Nationaler Barcode\r\n    Beispiel: 994214393000008666\r\n    Validierung: (98|99)[0-9]{16} (18 Zeichen)\r\nc) Produktcode: PRZL (Produkt/Zusatzleistungen)\r\n    Beispiel: 0509\r\n    Validierung: [0-9]{4} (4 Zeichen)\r\nd) BoxId\r\n    Erste zwei Ziffern: Typ der Bod: «45» für ThermoCare-Box, Letzte sechs Ziffern: Seriennummer der Box\r\n    Beispiel: 45093456\r\n    Validierung: [0-9]{8} (8 Zeichen)\r\ne) Förderhilfentyp\r\n    Format: Erste zwei Ziffern: Typ der Förderhilfe, Letzte vier Ziffern: Gewicht der Förderhilfe in Gramm\r\n    Beispiel: 020450\r\n    Validierung: [0-9]{6} (6 Zeichen)\r\n\r\n# DataMatrix \r\nDatenfeld: Data Matrix \r\n- Validierung: ECC200\r\n   Beispiel: 756109025843770000010000000000000000000003489510005501606300\r\n   Validierung: ECC200 (Max. 90 Zeichen)"
+            },
+            "location": {
+              "$schema": "http://json-schema.org/draft-03/schema#",
+              "definitions": {},
+              "type": "object",
+              "properties": {
+                "face": {
+                  "description": "# GER-TODO\r\nZur Erkennung auf welcher Seite (welche Kamera) der Identcode gelesen wurde (z.B. für VCS…).\r\nDer Wert ist nur auf den Identcode (national) bezogen.",
+                  "$schema": "http://json-schema.org/draft-03/schema#",
+                  "definitions": {},
+                  "type": "string",
+                  "enum": [
+                    "TOP",
+                    "LEFT",
+                    "RIGHT",
+                    "FRONT",
+                    "BACK",
+                    "BOTTOM"
+                  ],
+                  "id": "MailpieceFace"
+                },
+                "polygon": {
+                  "description": "Achtung: Die Punkte in Förderrichtung durchnummeriert, im Unterschied zum CEN-Standard, wo sie im (Gegen-)Uhrzeigersinn ausgerichtet sind.\r\nDie Punkte werden wie folgt ermittelt/ausgegeben:\r\nerster Punkt in Förde-richtung ist der Start-punkt gezählt wird fortlaufend in Förderichtung (nicht Uhrzeigersinn) \r\nalle Angaben sind bezogen auf den Triggernullpunkt (= Schalenanfang) ‚x’ wird in Förderrichtung ermittelt; ‚y’ quer zur Förderrichtung",
+                  "$schema": "http://json-schema.org/draft-03/schema#",
+                  "definitions": {},
+                  "type": "object",
+                  "properties": {
+                    "dot": {
+                      "type": "array",
+                      "items": {
+                        "$schema": "http://json-schema.org/draft-03/schema#",
+                        "definitions": {},
+                        "type": "object",
+                        "properties": {
+                          "x": {
+                            "type": "number",
+                            "required": true
+                          },
+                          "y": {
+                            "type": "number",
+                            "required": true
+                          }
+                        },
+                        "additionalProperties": false,
+                        "id": "PolygonDot"
+                      },
+                      "required": true
+                    }
+                  },
+                  "additionalProperties": false,
+                  "id": "Polygon"
+                }
+              },
+              "additionalProperties": false,
+              "description": "To specify a region location, the region descriptor LocationT listed subsequently is used. LocationT encloses\r\nno information about the image orientation. The image orientation is specified in the TIFF header. Region\r\ncoordinates are given in pixel and are related to the image origin which corresponds to the upper left corner.\r\nThe coordinates are independent of the TIFF orientation.",
+              "id": "Location"
+            },
+            "dimension": {
+              "description": "[extension]\r\n\r\nParcel dimension.",
+              "$schema": "http://json-schema.org/draft-03/schema#",
+              "definitions": {},
+              "type": "object",
+              "properties": {
+                "length": {
+                  "type": "integer",
+                  "description": "Length in [mm]."
+                },
+                "width": {
+                  "type": "integer",
+                  "description": "Width in [mm]."
+                },
+                "height": {
+                  "type": "integer",
+                  "description": "Height in [mm]."
+                },
+                "state": {
+                  "$schema": "http://json-schema.org/draft-03/schema#",
+                  "definitions": {},
+                  "type": "object",
+                  "properties": {
+                    "measurementResult": {
+                      "required": true,
+                      "$schema": "http://json-schema.org/draft-03/schema#",
+                      "definitions": {},
+                      "type": "string",
+                      "enum": [
+                        "OK",
+                        "NOK",
+                        "NOT_RECOGNIZED"
+                      ],
+                      "description": "Measurement result state.\r\n\r\n- OK: Measurement VMS ok\r\n- NOK: Measurement VMS not ok\r\n- NOT_RECOGNIZED: No object recognized",
+                      "id": "DimensionMeasurementResultType"
+                    },
+                    "measurementRange": {
+                      "required": true,
+                      "$schema": "http://json-schema.org/draft-03/schema#",
+                      "definitions": {},
+                      "type": "string",
+                      "enum": [
+                        "INSIDE",
+                        "OUTSIDE"
+                      ],
+                      "description": "- INSIDE: Object is within the measurement range\r\n- OUTSIDE: Object is outside of the measurement range",
+                      "id": "DimensionMeasurementRangeType"
+                    },
+                    "itemSizeClassification": {
+                      "required": true,
+                      "$schema": "http://json-schema.org/draft-03/schema#",
+                      "definitions": {},
+                      "type": "object",
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "description": "True: object size ok\r\nFalse: Object size not ok (over and/or undersized, see corresponding flags)",
+                          "required": true
+                        },
+                        "oversized": {
+                          "type": "boolean",
+                          "description": "object too big to be measured",
+                          "required": true
+                        },
+                        "undersized": {
+                          "type": "boolean",
+                          "description": "object too small to be measured",
+                          "required": true
+                        }
+                      },
+                      "additionalProperties": false,
+                      "id": "ItemSizeClassificationType"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "description": "State of the measurement.",
+                  "id": "DimensionMeasurementState"
+                }
+              },
+              "additionalProperties": false,
+              "id": "Dimension"
+            },
+            "weight": {
+              "description": "[extension]\r\n\r\nParcel weight.",
+              "$schema": "http://json-schema.org/draft-03/schema#",
+              "definitions": {},
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "integer",
+                  "description": "Actual weight in [g].",
+                  "maxLength": 6
+                },
+                "state": {
+                  "$schema": "http://json-schema.org/draft-03/schema#",
+                  "definitions": {},
+                  "type": "object",
+                  "properties": {
+                    "isLegalForTrade": {
+                      "type": "boolean",
+                      "description": "False: Weight is not legal for trade.",
+                      "required": true
+                    },
+                    "packageDistanceError": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "packageLengthError": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "externalError": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "invalidMeasurement": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "overweight": {
+                      "type": "boolean",
+                      "description": "Weight higher than max. weight.",
+                      "required": true
+                    },
+                    "underweight": {
+                      "type": "boolean",
+                      "description": "Weight lower than min weight.",
+                      "required": true
+                    },
+                    "overload": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "underload": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "conveyorSpeedChangedDuringMeasurement": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "conveyorSpeedOutOfMaxLimit": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "alibiStorageAtScaleFailed": {
+                      "type": "boolean",
+                      "required": true
+                    },
+                    "scaleDataFormatError": {
+                      "type": "boolean",
+                      "required": true
+                    }
+                  },
+                  "additionalProperties": false,
+                  "id": "WeightMeasurementState"
+                }
+              },
+              "additionalProperties": false,
+              "id": "Weight"
+            },
+            "legalForTrade": {
+              "description": "[extension]\r\n\r\nLegal For Trade information.",
+              "$schema": "http://json-schema.org/draft-03/schema#",
+              "definitions": {},
+              "type": "object",
+              "properties": {
+                "actualVolume": {
+                  "type": "integer",
+                  "description": "# GER-TODO\r\n\r\nRealvolumen VMS#1 wenn VMS#1 = VMS420/520 Realvolumen = 000000 bei VMS#1 = VMS410/510\r\n[dm3]",
+                  "maxLength": 5
+                },
+                "boxVolume": {
+                  "type": "integer",
+                  "description": "Boxvolumen = Länge x Breite x Höhe\r\n[dm3]",
+                  "maxLength": 5
+                },
+                "volumeRatio": {
+                  "type": "integer",
+                  "description": "Realvolumen / Boxvolumen in % ganzzahlig"
+                },
+                "shape": {
+                  "description": "Die Paketform.",
+                  "$schema": "http://json-schema.org/draft-03/schema#",
+                  "definitions": {},
+                  "type": "string",
+                  "enum": [
+                    "CUBIC",
+                    "IRREGULAR"
+                  ],
+                  "id": "ShapeType"
+                },
+                "state": {
+                  "$schema": "http://json-schema.org/draft-03/schema#",
+                  "definitions": {},
+                  "type": "object",
+                  "properties": {
+                    "conveyorSpeedError": {
+                      "type": "boolean",
+                      "description": "Conveyor speed is out of tolerance.",
+                      "required": true
+                    },
+                    "storageError": {
+                      "type": "boolean",
+                      "description": "Alibi storage error.",
+                      "required": true
+                    },
+                    "dimensionError": {
+                      "type": "boolean",
+                      "description": "VMS data is not legal for trade.",
+                      "required": true
+                    },
+                    "weightError": {
+                      "type": "boolean",
+                      "description": "Weight data not legal for trade.",
+                      "required": true
+                    }
+                  },
+                  "additionalProperties": false,
+                  "description": "Detailed information on legal for trade relevant measurements.\r\n\r\n- If all flags are false, the measurements are legal for trade.\r\n- If only weightError is true, dimension measurement is legal for trade.\r\n- If only dimensionError is true, weight measurement is legal for trade.\r\n- Otherwise, measurements are not legal for trade.",
+                  "id": "LegalForTradeState"
+                }
+              },
+              "additionalProperties": false,
+              "id": "LegalForTrade"
+            },
+            "binOccupancy": {
+              "$schema": "http://json-schema.org/draft-03/schema#",
+              "definitions": {},
+              "type": "object",
+              "properties": {
+                "emptyBinOccupied": {
+                  "type": "boolean",
+                  "required": true
+                },
+                "binMultipleItemOccupied": {
+                  "type": "boolean",
+                  "required": true
+                },
+                "frontOverlappingLimitExceeded": {
+                  "type": "boolean",
+                  "required": true
+                },
+                "backOverlappingLimitExceeded": {
+                  "type": "boolean",
+                  "required": true
+                },
+                "multipleItemsDetected": {
+                  "type": "boolean",
+                  "required": true
+                },
+                "conveyingAidDetected": {
+                  "type": "boolean",
+                  "required": true
+                }
+              },
+              "additionalProperties": false,
+              "description": "Doppelbelegung / Leerschalen-kontrolle\r\nemptyBinOccupied: Belegte Leerschale\r\nbinMultipleItemOccupied: Doppelbelegung - Erkennung der Schalenbelegung von DWS\r\nfrontOverlappingLimitExceeded: Überstand vorne zu groß\r\nbackOverlappingLimitExceeded: Überstand hinten zu groß\r\nmultipleItemsDetected: >= 2 Objekt erkannt\r\nconveyingAidDetected: Förderhilfe erkannt",
+              "id": "BinOccupancyState"
+            }
+          },
+          "additionalProperties": false,
+          "id": "RecognitionResult"
+        }
+      },
+      "additionalProperties": false,
+      "id": "MailpieceAttr"
+    }
+  },
+  "additionalProperties": false,
+  "id": "SubmitMailpiece"
+}

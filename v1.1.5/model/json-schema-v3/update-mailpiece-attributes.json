@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "mailpieceId": {
+      "type": "string",
+      "description": "Represents the national identifier for the mailpiece item.",
+      "pattern": "(98|99)[0-9]{16}",
+      "required": true
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "[extension]\n\nTimestamp of data collection.",
+      "format": "date-time",
+      "required": true
+    },
+    "sourceId": {
+      "type": "string",
+      "description": "Refers to a module id as event-source.  ",
+      "pattern": "[A-Z]{3}[0-9]{2}",
+      "required": true
+    },
+    "weight": {
+      "type": "integer",
+      "description": "Weight of the mail piece in [g].",
+      "maxLength": 6
+    },
+    "sortBin": {
+      "type": "integer",
+      "description": "The name of the outlet to which the machine physically sorted the mail piece.\nThe outlet name is a 4 digit number.",
+      "maxLength": 4,
+      "required": true
+    },
+    "code": {
+      "type": "integer",
+      "description": "The destination sort code is the outlet group name (Virtuelles Ziel) assigned to the mail piece.\nSpecific values are defined on a per-program basis.",
+      "maxLength": 3
+    },
+    "finalCoded": {
+      "type": "boolean",
+      "description": "A boolean value indicating whether or not processing for a mail piece is complete.\n\n- false: mail piece was discharged\n- true: Discharging was verified",
+      "required": true
+    },
+    "sortReason": {
+      "$ref": "sort-reason.json"
+    }
+  },
+  "additionalProperties": false,
+  "description": "# GER-TODO\n\nDer Dienst ermöglicht der MC, aktualisierte oder zusätzliche Informationen in Bezug auf eine Postsendung zu übertragen, \ndie dem RC- System bereits vorgelegt worden ist. Solange sich die Postsendung zur Verarbeitung in der Maschine befindet, kann dieser \nDienst von der MC mehrfach ausgeführt werden.\nFür einen Sortierablauf ohne das Einscannen von Bildern (z.B.stationäre Bearbeitung im Zielfrachtzentrum oder Sortierung in der \nReihenfolge der Zustellung) kann mit diesem Dienst die Behälternummer zur Verfügung gestellt werden, in den die \nPostsendung physikalisch einsortiert wird; für diesen Fall muss kein submitMailpiece ausgeführt werden. ",
+  "id": "UpdateMailpieceAttributes"
+}

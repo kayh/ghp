@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "mailpieceId": {
+      "type": "string",
+      "description": "Represents the national identifier for the mailpiece item.",
+      "pattern": "(98|99)[0-9]{16}"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "[extension]\n\nTimestamp of data collection.",
+      "format": "date-time"
+    },
+    "sourceId": {
+      "type": "string",
+      "description": "Refers to a module id as event-source.  ",
+      "pattern": "[A-Z]{3}[0-9]{2}"
+    },
+    "weight": {
+      "type": "integer",
+      "description": "Weight of the mail piece in [g].",
+      "maxLength": 6
+    },
+    "sortBin": {
+      "type": "integer",
+      "description": "The name of the outlet to which the machine physically sorted the mail piece.\nThe outlet name is a 4 digit number.",
+      "maxLength": 4
+    },
+    "code": {
+      "type": "integer",
+      "description": "The destination sort code is the outlet group name (Virtuelles Ziel) assigned to the mail piece.\nSpecific values are defined on a per-program basis.",
+      "maxLength": 3
+    },
+    "finalCoded": {
+      "type": "boolean",
+      "description": "A boolean value indicating whether or not processing for a mail piece is complete.\n\n- false: mail piece was discharged\n- true: Discharging was verified"
+    },
+    "sortReason": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "definitions": {},
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "OK",
+        "MAX_RECIRCULATION",
+        "ITEM_NO_READ",
+        "ITEM_MULTIPLE_READ",
+        "SCANNER_TIMEOUT",
+        "ITEM_STRAY",
+        "ITEM_INDUCTION_ERROR",
+        "ITEM_DISCHARGE_ERROR",
+        "ITEM_ERROR",
+        "ITEM_TRACKING_ERROR",
+        "ITEM_OCCUPIED_TWICE_ERROR",
+        "ITEM_DISAPPEARED",
+        "OUTLET_NOT_AVAILABLE",
+        "OUTLET_UNKNOWN",
+        "UNDEFINED_ERROR",
+        "NO_CAPACITY",
+        "DIMENSION_ERROR",
+        "WEIGHT_ERROR",
+        "SORTPLAN_ERROR",
+        "DIRECT_SORTING_MODE"
+      ],
+      "description": "Defines the machine specific sort reasons.\nList of values:\n- UNKNOWN: Default enum value to map not supported values.\n- OK: Discharge OK. This describes just a \"regular\" item\n- MAX_RECIRCULATION: Item has reached the max allowed amount of recirculations.\n- ITEM_NO_READ: Item has reached the max allowed amount of scans and the last attempt was a no read.\n- ITEM_MULTIPLE_READ: Multiple national or international id barcodes could be identified. \n- SCANNER_TIMEOUT: Item has reached the max allowed amount of scans and the last attempt was a \"no answer\" from scanner. \n- ITEM_STRAY: Stray item detected. \n- ITEM_INDUCTION_ERROR: Induction error item detected (occupied twice, wrong tray). \n- ITEM_DISCHARGE_ERROR: Discharge faults. \n- ITEM_ERROR: Item has a Logical error. \n- ITEM_TRACKING_ERROR: item was inducted with tracking fault.\n- ITEM_OCCUPIED_TWICE_ERROR: item was inducted on occupied tray.\n- ITEM_DISAPPEARED: The parcel was lost at unknown location.\n- OUTLET_NOT_AVAILABLE: No available chute could be found.\n- OUTLET_UNKNOWN: Logical destination not defined.\n- UNDEFINED_ERROR: Internal error happened.\n- NO_CAPACITY: The destination outlet has no more capacity.\n- DIMENSION_ERROR: Item oversize. The parcel was discharge, because of dimension exceed. \n- WEIGHT_ERROR: Item too heavy. The parcel was discharge, because of weight exceed.\n- SORTPLAN_ERROR: Sortplan error. \n- DIRECT_SORTING_MODE: Item sorted by the direct sorting mode. ",
+      "id": "SortReason"
+    }
+  },
+  "required": [
+    "mailpieceId",
+    "timestamp",
+    "sourceId",
+    "sortBin",
+    "finalCoded"
+  ],
+  "additionalProperties": false,
+  "description": "# GER-TODO\n\nDer Dienst ermöglicht der MC, aktualisierte oder zusätzliche Informationen in Bezug auf eine Postsendung zu übertragen, \ndie dem RC- System bereits vorgelegt worden ist. Solange sich die Postsendung zur Verarbeitung in der Maschine befindet, kann dieser \nDienst von der MC mehrfach ausgeführt werden.\nFür einen Sortierablauf ohne das Einscannen von Bildern (z.B.stationäre Bearbeitung im Zielfrachtzentrum oder Sortierung in der \nReihenfolge der Zustellung) kann mit diesem Dienst die Behälternummer zur Verfügung gestellt werden, in den die \nPostsendung physikalisch einsortiert wird; für diesen Fall muss kein submitMailpiece ausgeführt werden. ",
+  "id": "UpdateMailpieceAttributes"
+}

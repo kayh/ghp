@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "ok": {
+      "type": "boolean",
+      "description": "True: object size ok\r\nFalse: Object size not ok (over and/or undersized, see corresponding flags)"
+    },
+    "oversized": {
+      "type": "boolean",
+      "description": "object too big to be measured"
+    },
+    "undersized": {
+      "type": "boolean",
+      "description": "object too small to be measured"
+    }
+  },
+  "required": [
+    "ok",
+    "oversized",
+    "undersized"
+  ],
+  "additionalProperties": false,
+  "id": "ItemSizeClassificationType"
+}

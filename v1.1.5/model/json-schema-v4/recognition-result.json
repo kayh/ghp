@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "multipleMailpiecdIdRecognized": {
+      "type": "boolean",
+      "description": "If true, multiple identcodes were recognized by the camera."
+    },
+    "barCodes": {
+      "type": "array",
+      "items": {
+        "$ref": "bar-code.json"
+      },
+      "description": "[extension]\r\n\r\n# Code 128\r\na) Internationaler Barcode\r\n    Beispiel: EP923689367CH\r\n    Validierung: [A-Z]{2}[0-9]{9}[A-Z]{2} (13 Zeichen)\r\nb) Nationaler Barcode\r\n    Beispiel: 994214393000008666\r\n    Validierung: (98|99)[0-9]{16} (18 Zeichen)\r\nc) Produktcode: PRZL (Produkt/Zusatzleistungen)\r\n    Beispiel: 0509\r\n    Validierung: [0-9]{4} (4 Zeichen)\r\nd) BoxId\r\n    Erste zwei Ziffern: Typ der Bod: «45» für ThermoCare-Box, Letzte sechs Ziffern: Seriennummer der Box\r\n    Beispiel: 45093456\r\n    Validierung: [0-9]{8} (8 Zeichen)\r\ne) Förderhilfentyp\r\n    Format: Erste zwei Ziffern: Typ der Förderhilfe, Letzte vier Ziffern: Gewicht der Förderhilfe in Gramm\r\n    Beispiel: 020450\r\n    Validierung: [0-9]{6} (6 Zeichen)\r\n\r\n# DataMatrix \r\nDatenfeld: Data Matrix \r\n- Validierung: ECC200\r\n   Beispiel: 756109025843770000010000000000000000000003489510005501606300\r\n   Validierung: ECC200 (Max. 90 Zeichen)"
+    },
+    "location": {
+      "$ref": "location.json"
+    },
+    "dimension": {
+      "$ref": "dimension.json",
+      "description": "[extension]\r\n\r\nParcel dimension."
+    },
+    "weight": {
+      "$ref": "weight.json",
+      "description": "[extension]\r\n\r\nParcel weight."
+    },
+    "legalForTrade": {
+      "$ref": "legal-for-trade.json",
+      "description": "[extension]\r\n\r\nLegal For Trade information."
+    },
+    "binOccupancy": {
+      "$ref": "bin-occupancy-state.json"
+    }
+  },
+  "additionalProperties": false,
+  "id": "RecognitionResult"
+}

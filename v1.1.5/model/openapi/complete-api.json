@@ -1,0 +1,830 @@
+{
+  "swagger": 2,
+  "info": {
+    "title": "cen-mc-rc stream API",
+    "description": "Interaction between Machine Control and Reading Coding System - CEN/TS 16238.",
+    "contact": {
+      "name": "Kay Herzam (Swiss Post)",
+      "email": "kay.herzam@post.ch"
+    },
+    "version": "1.1.5"
+  },
+  "host": "server:8080",
+  "basePath": "mqtt",
+  "paths": {
+    "cen-mc-rc/v1/machine/submit-mailpiece/{srcSystem}/{srcInstance}": {
+      "post": {
+        "summary": "ATG-3 Submit Mailpiece (Sensordaten empfangen)",
+        "description": "The Machine submits the recognized mailpiece attributes.",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/SubmitMailpiece"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/machine/update-mailpiece-attributes/{srcSystem}/{srcInstance}": {
+      "post": {
+        "summary": "ATG-5 Update Mailpiece Attributes (Sortierergebnis empfangen)",
+        "description": "The Machine reports new or changed attributes in order to update the mailpiece attribute database on the Coding System (e.g. indicating the sort bin). (Re-)Connected to ATG - The publisher needs to buffer all unsent messages for at least 1 day until the message is sent successfully to the ATG.",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/UpdateMailpieceAttributes"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/machine/request-mailpiece-attributes/{srcSystem}/{srcInstance}/{conversationId}": {
+      "post": {
+        "summary": "ATG-4 Request Mailpiece Attributes (Sortierziel berechnen)",
+        "description": "Request for the coding result (outlet group)",
+        "tags": [
+          "machine"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          },
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "ID that will be included in the transmit-mailpiece-attributes topic in order to correlate the messages",
+            "type": "string",
+            "default": "12345"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/RequestMailpieceAttributes"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/coding/transmit-mailpiece-attributes/{srcSystem}/{srcInstance}/{dstSystem}/{dstInstance}/{conversationId}": {
+      "post": {
+        "summary": "ATG-4 Transmit Mailpiece Attributes (Sortierziel berechnen)",
+        "description": "The RC System returns mailpiece attributes to the Machine, either in response to a Submit Mailpiece or a Request Mailpiece Attributes. There may be multiple responses of Transmit Mailpiece Attributes for a single “Submit Mailpiece” message, e.g. partial OCR results followed with final VCS result.",
+        "tags": [
+          "coding"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ZDS"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          },
+          {
+            "name": "dstSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system receiving the message",
+            "type": "string",
+            "default": "ASL"
+          },
+          {
+            "name": "dstInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance receiving the message",
+            "type": "string",
+            "default": "01"
+          },
+          {
+            "name": "conversationId",
+            "in": "path",
+            "description": "ID from the request-mailpiece-attributes request for correlation",
+            "type": "string",
+            "default": "12345"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/TransmitMailpieceAttributes"
+            }
+          }
+        }
+      }
+    },
+    "cen-mc-rc/v1/coding/transmit-mailpiece-attributes/{srcSystem}/{srcInstance}": {
+      "post": {
+        "summary": "ATG-4 Transmit Mailpiece Attributes (Sortierziel berechnen)",
+        "description": "Trigger transmit-mailpiece-attributes event without request (no dstSystem and dstInstance parameters)",
+        "tags": [
+          "coding"
+        ],
+        "parameters": [
+          {
+            "name": "srcSystem",
+            "in": "path",
+            "description": "3-letter uppercase name identifying the system issuing the message",
+            "type": "string",
+            "default": "ZDS"
+          },
+          {
+            "name": "srcInstance",
+            "in": "path",
+            "description": "two-digit padded number identifying the system instance issuing the message",
+            "type": "string",
+            "default": "01"
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "$ref": "#/definitions/TransmitMailpieceAttributes"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AddressResult": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "description": "The destination sort code is the outlet group name (Virtuelles Ziel) assigned to the mail piece.\nSpecific values are defined on a per-program basis.",
+          "maxLength": 3
+        },
+        "rejectReasons": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "This string element contains a reason why the RC System was unable to determine a result.\nThe sorting machine needs to recognize and count the reject reason in order to\na) stop the induction when the reject reason occured max. times in a row\nb) generate live-data / statistics"
+        }
+      },
+      "required": [
+        "code"
+      ],
+      "additionalProperties": false,
+      "id": "AddressResult"
+    },
+    "BarCodeStatus": {
+      "type": "string",
+      "enum": [
+        "NO_BARCODE",
+        "DETECTED_AND_RECOGNIZED",
+        "DETECTED_AND_NOT_RECOGNIZED"
+      ],
+      "id": "BarCodeStatus"
+    },
+    "BarCodeSymbology": {
+      "type": "string",
+      "enum": [
+        "CODE_128",
+        "DATA_MATRIX"
+      ],
+      "description": "Provides the valid symbologies of a barcode label",
+      "id": "BarCodeSymbology"
+    },
+    "BarCode": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/BarCodeSymbology",
+          "description": "Provides the valid symbologies of a barcode label."
+        },
+        "value": {
+          "type": "string",
+          "description": "This element contains the value of the barcode."
+        },
+        "status": {
+          "$ref": "#/definitions/BarCodeStatus",
+          "description": "This element contains the status of the barcode."
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false,
+      "description": "This type contains a barcode.",
+      "id": "BarCode"
+    },
+    "BinOccupancyState": {
+      "type": "object",
+      "properties": {
+        "emptyBinOccupied": {
+          "type": "boolean"
+        },
+        "binMultipleItemOccupied": {
+          "type": "boolean"
+        },
+        "frontOverlappingLimitExceeded": {
+          "type": "boolean"
+        },
+        "backOverlappingLimitExceeded": {
+          "type": "boolean"
+        },
+        "multipleItemsDetected": {
+          "type": "boolean"
+        },
+        "conveyingAidDetected": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "emptyBinOccupied",
+        "binMultipleItemOccupied",
+        "frontOverlappingLimitExceeded",
+        "backOverlappingLimitExceeded",
+        "multipleItemsDetected",
+        "conveyingAidDetected"
+      ],
+      "additionalProperties": false,
+      "description": "Doppelbelegung / Leerschalen-kontrolle\r\nemptyBinOccupied: Belegte Leerschale\r\nbinMultipleItemOccupied: Doppelbelegung - Erkennung der Schalenbelegung von DWS\r\nfrontOverlappingLimitExceeded: Überstand vorne zu groß\r\nbackOverlappingLimitExceeded: Überstand hinten zu groß\r\nmultipleItemsDetected: >= 2 Objekt erkannt\r\nconveyingAidDetected: Förderhilfe erkannt",
+      "id": "BinOccupancyState"
+    },
+    "DimensionMeasurementRangeType": {
+      "type": "string",
+      "enum": [
+        "INSIDE",
+        "OUTSIDE"
+      ],
+      "description": "- INSIDE: Object is within the measurement range\r\n- OUTSIDE: Object is outside of the measurement range",
+      "id": "DimensionMeasurementRangeType"
+    },
+    "DimensionMeasurementResultType": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "NOK",
+        "NOT_RECOGNIZED"
+      ],
+      "description": "Measurement result state.\r\n\r\n- OK: Measurement VMS ok\r\n- NOK: Measurement VMS not ok\r\n- NOT_RECOGNIZED: No object recognized",
+      "id": "DimensionMeasurementResultType"
+    },
+    "DimensionMeasurementState": {
+      "type": "object",
+      "properties": {
+        "measurementResult": {
+          "$ref": "#/definitions/DimensionMeasurementResultType"
+        },
+        "measurementRange": {
+          "$ref": "#/definitions/DimensionMeasurementRangeType"
+        },
+        "itemSizeClassification": {
+          "$ref": "#/definitions/ItemSizeClassificationType"
+        }
+      },
+      "required": [
+        "measurementResult",
+        "measurementRange",
+        "itemSizeClassification"
+      ],
+      "additionalProperties": false,
+      "description": "State of the measurement.",
+      "id": "DimensionMeasurementState"
+    },
+    "Dimension": {
+      "type": "object",
+      "properties": {
+        "length": {
+          "type": "integer",
+          "description": "Length in [mm]."
+        },
+        "width": {
+          "type": "integer",
+          "description": "Width in [mm]."
+        },
+        "height": {
+          "type": "integer",
+          "description": "Height in [mm]."
+        },
+        "state": {
+          "$ref": "#/definitions/DimensionMeasurementState"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Parcel dimensions",
+      "id": "Dimension"
+    },
+    "ItemSizeClassificationType": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "description": "True: object size ok\r\nFalse: Object size not ok (over and/or undersized, see corresponding flags)"
+        },
+        "oversized": {
+          "type": "boolean",
+          "description": "object too big to be measured"
+        },
+        "undersized": {
+          "type": "boolean",
+          "description": "object too small to be measured"
+        }
+      },
+      "required": [
+        "ok",
+        "oversized",
+        "undersized"
+      ],
+      "additionalProperties": false,
+      "id": "ItemSizeClassificationType"
+    },
+    "LegalForTradeState": {
+      "type": "object",
+      "properties": {
+        "conveyorSpeedError": {
+          "type": "boolean",
+          "description": "Conveyor speed is out of tolerance."
+        },
+        "storageError": {
+          "type": "boolean",
+          "description": "Alibi storage error."
+        },
+        "dimensionError": {
+          "type": "boolean",
+          "description": "VMS data is not legal for trade."
+        },
+        "weightError": {
+          "type": "boolean",
+          "description": "Weight data not legal for trade."
+        }
+      },
+      "required": [
+        "conveyorSpeedError",
+        "storageError",
+        "dimensionError",
+        "weightError"
+      ],
+      "additionalProperties": false,
+      "description": "Detailed information on legal for trade relevant measurements.\r\n\r\n- If all flags are false, the measurements are legal for trade.\r\n- If only weightError is true, dimension measurement is legal for trade.\r\n- If only dimensionError is true, weight measurement is legal for trade.\r\n- Otherwise, measurements are not legal for trade.",
+      "id": "LegalForTradeState"
+    },
+    "LegalForTrade": {
+      "type": "object",
+      "properties": {
+        "actualVolume": {
+          "type": "integer",
+          "description": "# GER-TODO\r\n\r\nRealvolumen VMS#1 wenn VMS#1 = VMS420/520 Realvolumen = 000000 bei VMS#1 = VMS410/510\r\n[dm3]",
+          "maxLength": 5
+        },
+        "boxVolume": {
+          "type": "integer",
+          "description": "Boxvolumen = Länge x Breite x Höhe\r\n[dm3]",
+          "maxLength": 5
+        },
+        "volumeRatio": {
+          "type": "integer",
+          "description": "Realvolumen / Boxvolumen in % ganzzahlig"
+        },
+        "shape": {
+          "$ref": "#/definitions/ShapeType",
+          "description": "Die Paketform."
+        },
+        "state": {
+          "$ref": "#/definitions/LegalForTradeState"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Customs information",
+      "id": "LegalForTrade"
+    },
+    "Location": {
+      "type": "object",
+      "properties": {
+        "face": {
+          "$ref": "#/definitions/MailpieceFace",
+          "description": "# GER-TODO\r\nZur Erkennung auf welcher Seite (welche Kamera) der Identcode gelesen wurde (z.B. für VCS…).\r\nDer Wert ist nur auf den Identcode (national) bezogen."
+        },
+        "polygon": {
+          "$ref": "#/definitions/Polygon",
+          "description": "Achtung: Die Punkte in Förderrichtung durchnummeriert, im Unterschied zum CEN-Standard, wo sie im (Gegen-)Uhrzeigersinn ausgerichtet sind.\r\nDie Punkte werden wie folgt ermittelt/ausgegeben:\r\nerster Punkt in Förde-richtung ist der Start-punkt gezählt wird fortlaufend in Förderichtung (nicht Uhrzeigersinn) \r\nalle Angaben sind bezogen auf den Triggernullpunkt (= Schalenanfang) ‚x’ wird in Förderrichtung ermittelt; ‚y’ quer zur Förderrichtung"
+        }
+      },
+      "additionalProperties": false,
+      "description": "To specify a region location, the region descriptor LocationT listed subsequently is used. LocationT encloses\r\nno information about the image orientation. The image orientation is specified in the TIFF header. Region\r\ncoordinates are given in pixel and are related to the image origin which corresponds to the upper left corner.\r\nThe coordinates are independent of the TIFF orientation.",
+      "id": "Location"
+    },
+    "MailpieceAttr": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/MailpieceType",
+          "description": "Defines the type of the mail item.\r\n\r\nWill be hardcoded to 'parcel'."
+        },
+        "preknowledge": {
+          "$ref": "#/definitions/RecognitionResult",
+          "description": "Provides preknowledge to the RC System, e.g. a barcode\r\nresult if a barcode reader is integrated into the machine."
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "additionalProperties": false,
+      "description": "This type is taken from CEN/TS 15448 and extended by a “preknowledge” element.\r\nThe type MailpieceAttrT specifies basic mailpiece attributes.",
+      "id": "MailpieceAttr"
+    },
+    "MailpieceFace": {
+      "type": "string",
+      "enum": [
+        "TOP",
+        "LEFT",
+        "RIGHT",
+        "FRONT",
+        "BACK",
+        "BOTTOM"
+      ],
+      "id": "MailpieceFace"
+    },
+    "MailpieceType": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "LETTER",
+        "LETTER_BUNDLE",
+        "FLAT",
+        "FLAT_BUNDLE",
+        "PARCEL"
+      ],
+      "id": "MailpieceType"
+    },
+    "PolygonDot": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "x",
+        "y"
+      ],
+      "additionalProperties": false,
+      "id": "PolygonDot"
+    },
+    "Polygon": {
+      "type": "object",
+      "properties": {
+        "dot": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PolygonDot"
+          }
+        }
+      },
+      "required": [
+        "dot"
+      ],
+      "additionalProperties": false,
+      "id": "Polygon"
+    },
+    "RecognitionResult": {
+      "type": "object",
+      "properties": {
+        "multipleMailpiecdIdRecognized": {
+          "type": "boolean",
+          "description": "If true, multiple identcodes were recognized by the camera."
+        },
+        "barCodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/BarCode"
+          },
+          "description": "[extension]\r\n\r\n# Code 128\r\na) Internationaler Barcode\r\n    Beispiel: EP923689367CH\r\n    Validierung: [A-Z]{2}[0-9]{9}[A-Z]{2} (13 Zeichen)\r\nb) Nationaler Barcode\r\n    Beispiel: 994214393000008666\r\n    Validierung: (98|99)[0-9]{16} (18 Zeichen)\r\nc) Produktcode: PRZL (Produkt/Zusatzleistungen)\r\n    Beispiel: 0509\r\n    Validierung: [0-9]{4} (4 Zeichen)\r\nd) BoxId\r\n    Erste zwei Ziffern: Typ der Bod: «45» für ThermoCare-Box, Letzte sechs Ziffern: Seriennummer der Box\r\n    Beispiel: 45093456\r\n    Validierung: [0-9]{8} (8 Zeichen)\r\ne) Förderhilfentyp\r\n    Format: Erste zwei Ziffern: Typ der Förderhilfe, Letzte vier Ziffern: Gewicht der Förderhilfe in Gramm\r\n    Beispiel: 020450\r\n    Validierung: [0-9]{6} (6 Zeichen)\r\n\r\n# DataMatrix \r\nDatenfeld: Data Matrix \r\n- Validierung: ECC200\r\n   Beispiel: 756109025843770000010000000000000000000003489510005501606300\r\n   Validierung: ECC200 (Max. 90 Zeichen)"
+        },
+        "location": {
+          "$ref": "#/definitions/Location"
+        },
+        "dimension": {
+          "$ref": "#/definitions/Dimension",
+          "description": "[extension]\r\n\r\nParcel dimension."
+        },
+        "weight": {
+          "$ref": "#/definitions/Weight",
+          "description": "[extension]\r\n\r\nParcel weight."
+        },
+        "legalForTrade": {
+          "$ref": "#/definitions/LegalForTrade",
+          "description": "[extension]\r\n\r\nLegal For Trade information."
+        },
+        "binOccupancy": {
+          "$ref": "#/definitions/BinOccupancyState"
+        }
+      },
+      "additionalProperties": false,
+      "id": "RecognitionResult"
+    },
+    "RequestMailpieceAttributes": {
+      "type": "object",
+      "properties": {
+        "mailpieceId": {
+          "type": "string",
+          "description": "Represents the national identifier for the mailpiece item.",
+          "pattern": "(98|99)[0-9]{16}"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "[extension]\n\nTimestamp of data collection.",
+          "format": "date-time"
+        },
+        "sourceId": {
+          "type": "string",
+          "description": "Refers to a module id as event-source.  ",
+          "pattern": "[A-Z]{3}[0-9]{2}"
+        }
+      },
+      "required": [
+        "mailpieceId",
+        "timestamp",
+        "sourceId"
+      ],
+      "additionalProperties": false,
+      "description": "This type provides the requester with the ability to obtain the results of an enrichment response. The RC\nreturns the document either on request of the MC or in an unsolicited fashion.\nThe MC expects to get all defined attributes for the corresponding mailpiece from the RC System.",
+      "id": "RequestMailpieceAttributes"
+    },
+    "ShapeType": {
+      "type": "string",
+      "enum": [
+        "CUBIC",
+        "IRREGULAR"
+      ],
+      "id": "ShapeType"
+    },
+    "SortReason": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "OK",
+        "MAX_RECIRCULATION",
+        "ITEM_NO_READ",
+        "ITEM_MULTIPLE_READ",
+        "SCANNER_TIMEOUT",
+        "ITEM_STRAY",
+        "ITEM_INDUCTION_ERROR",
+        "ITEM_DISCHARGE_ERROR",
+        "ITEM_ERROR",
+        "ITEM_TRACKING_ERROR",
+        "ITEM_OCCUPIED_TWICE_ERROR",
+        "ITEM_DISAPPEARED",
+        "OUTLET_NOT_AVAILABLE",
+        "OUTLET_UNKNOWN",
+        "UNDEFINED_ERROR",
+        "NO_CAPACITY",
+        "DIMENSION_ERROR",
+        "WEIGHT_ERROR",
+        "SORTPLAN_ERROR",
+        "DIRECT_SORTING_MODE"
+      ],
+      "description": "Defines the machine specific sort reasons.\nList of values:\n- UNKNOWN: Default enum value to map not supported values.\n- OK: Discharge OK. This describes just a \"regular\" item\n- MAX_RECIRCULATION: Item has reached the max allowed amount of recirculations.\n- ITEM_NO_READ: Item has reached the max allowed amount of scans and the last attempt was a no read.\n- ITEM_MULTIPLE_READ: Multiple national or international id barcodes could be identified. \n- SCANNER_TIMEOUT: Item has reached the max allowed amount of scans and the last attempt was a \"no answer\" from scanner. \n- ITEM_STRAY: Stray item detected. \n- ITEM_INDUCTION_ERROR: Induction error item detected (occupied twice, wrong tray). \n- ITEM_DISCHARGE_ERROR: Discharge faults. \n- ITEM_ERROR: Item has a Logical error. \n- ITEM_TRACKING_ERROR: item was inducted with tracking fault.\n- ITEM_OCCUPIED_TWICE_ERROR: item was inducted on occupied tray.\n- ITEM_DISAPPEARED: The parcel was lost at unknown location.\n- OUTLET_NOT_AVAILABLE: No available chute could be found.\n- OUTLET_UNKNOWN: Logical destination not defined.\n- UNDEFINED_ERROR: Internal error happened.\n- NO_CAPACITY: The destination outlet has no more capacity.\n- DIMENSION_ERROR: Item oversize. The parcel was discharge, because of dimension exceed. \n- WEIGHT_ERROR: Item too heavy. The parcel was discharge, because of weight exceed.\n- SORTPLAN_ERROR: Sortplan error. \n- DIRECT_SORTING_MODE: Item sorted by the direct sorting mode. ",
+      "id": "SortReason"
+    },
+    "SubmitMailpiece": {
+      "type": "object",
+      "properties": {
+        "mailpieceId": {
+          "type": "string",
+          "description": "Represents the national identifier for the mailpiece item.",
+          "pattern": "(98|99)[0-9]{16}"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "[extension]\r\n\r\nTimestamp of data collection.",
+          "format": "date-time"
+        },
+        "sourceId": {
+          "type": "string",
+          "description": "Refers to a module id as event-source.  ",
+          "pattern": "[A-Z]{3}[0-9]{2}"
+        },
+        "mpAttr": {
+          "$ref": "#/definitions/MailpieceAttr",
+          "description": "The MailpieceAttrT type is assigned to the element mp_attr. It provides basic\r\nmailpiece related information:\r\n\r\n- the kind of the mail item\r\n- the mailclass of the mail item; important for the ED because it and may affect the address recognition\r\n- the scanned faces of the mail item. The FaceSetT type is assigned to faces and allows providing a sequence of faces. \r\n   The FaceSetT types allows to link a face with the corresponding image by a page attribute.\r\n- a preknowledge result if a barcode reader or some other type of Enrichment Device is directly attached to the MC.\r\n   This result will be in accordance with the result type specified in the IC-ED interface."
+        }
+      },
+      "required": [
+        "mailpieceId",
+        "timestamp",
+        "sourceId"
+      ],
+      "additionalProperties": false,
+      "id": "SubmitMailpiece"
+    },
+    "TransmitMailpieceAttributes": {
+      "type": "object",
+      "properties": {
+        "mailpieceId": {
+          "type": "string",
+          "description": "Represents the national identifier for the mailpiece item.",
+          "pattern": "(98|99)[0-9]{16}"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "[extension]\n\nTimestamp of data collection.",
+          "format": "date-time"
+        },
+        "addressResult": {
+          "$ref": "#/definitions/AddressResult"
+        }
+      },
+      "required": [
+        "mailpieceId",
+        "timestamp"
+      ],
+      "additionalProperties": false,
+      "description": "This type contains the result for a mail piece that has been determined by the RC System.",
+      "id": "TransmitMailpieceAttributes"
+    },
+    "UpdateMailpieceAttributes": {
+      "type": "object",
+      "properties": {
+        "mailpieceId": {
+          "type": "string",
+          "description": "Represents the national identifier for the mailpiece item.",
+          "pattern": "(98|99)[0-9]{16}"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "[extension]\n\nTimestamp of data collection.",
+          "format": "date-time"
+        },
+        "sourceId": {
+          "type": "string",
+          "description": "Refers to a module id as event-source.  ",
+          "pattern": "[A-Z]{3}[0-9]{2}"
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Weight of the mail piece in [g].",
+          "maxLength": 6
+        },
+        "sortBin": {
+          "type": "integer",
+          "description": "The name of the outlet to which the machine physically sorted the mail piece.\nThe outlet name is a 4 digit number.",
+          "maxLength": 4
+        },
+        "code": {
+          "type": "integer",
+          "description": "The destination sort code is the outlet group name (Virtuelles Ziel) assigned to the mail piece.\nSpecific values are defined on a per-program basis.",
+          "maxLength": 3
+        },
+        "finalCoded": {
+          "type": "boolean",
+          "description": "A boolean value indicating whether or not processing for a mail piece is complete.\n\n- false: mail piece was discharged\n- true: Discharging was verified"
+        },
+        "sortReason": {
+          "$ref": "#/definitions/SortReason"
+        }
+      },
+      "required": [
+        "mailpieceId",
+        "timestamp",
+        "sourceId",
+        "sortBin",
+        "finalCoded"
+      ],
+      "additionalProperties": false,
+      "description": "# GER-TODO\n\nDer Dienst ermöglicht der MC, aktualisierte oder zusätzliche Informationen in Bezug auf eine Postsendung zu übertragen, \ndie dem RC- System bereits vorgelegt worden ist. Solange sich die Postsendung zur Verarbeitung in der Maschine befindet, kann dieser \nDienst von der MC mehrfach ausgeführt werden.\nFür einen Sortierablauf ohne das Einscannen von Bildern (z.B.stationäre Bearbeitung im Zielfrachtzentrum oder Sortierung in der \nReihenfolge der Zustellung) kann mit diesem Dienst die Behälternummer zur Verfügung gestellt werden, in den die \nPostsendung physikalisch einsortiert wird; für diesen Fall muss kein submitMailpiece ausgeführt werden. ",
+      "id": "UpdateMailpieceAttributes"
+    },
+    "WeightMeasurementState": {
+      "type": "object",
+      "properties": {
+        "isLegalForTrade": {
+          "type": "boolean",
+          "description": "False: Weight is not legal for trade."
+        },
+        "packageDistanceError": {
+          "type": "boolean"
+        },
+        "packageLengthError": {
+          "type": "boolean"
+        },
+        "externalError": {
+          "type": "boolean"
+        },
+        "invalidMeasurement": {
+          "type": "boolean"
+        },
+        "overweight": {
+          "type": "boolean",
+          "description": "Weight higher than max. weight."
+        },
+        "underweight": {
+          "type": "boolean",
+          "description": "Weight lower than min weight."
+        },
+        "overload": {
+          "type": "boolean"
+        },
+        "underload": {
+          "type": "boolean"
+        },
+        "conveyorSpeedChangedDuringMeasurement": {
+          "type": "boolean"
+        },
+        "conveyorSpeedOutOfMaxLimit": {
+          "type": "boolean"
+        },
+        "alibiStorageAtScaleFailed": {
+          "type": "boolean"
+        },
+        "scaleDataFormatError": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "isLegalForTrade",
+        "packageDistanceError",
+        "packageLengthError",
+        "externalError",
+        "invalidMeasurement",
+        "overweight",
+        "underweight",
+        "overload",
+        "underload",
+        "conveyorSpeedChangedDuringMeasurement",
+        "conveyorSpeedOutOfMaxLimit",
+        "alibiStorageAtScaleFailed",
+        "scaleDataFormatError"
+      ],
+      "additionalProperties": false,
+      "id": "WeightMeasurementState"
+    },
+    "Weight": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "integer",
+          "description": "Actual weight in [g].",
+          "maxLength": 6
+        },
+        "state": {
+          "$ref": "#/definitions/WeightMeasurementState"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Weight information with a corresponding status.",
+      "id": "Weight"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+    "mailpieceId": "993413796700000321",
+    "addressResult": {
+        "code": 685,
+        "rejectReasons": ["VZ_SC_FEED"]
+    },
+    "timestamp": "2019-09-02T14:13:38.8124818+02:00"
+}

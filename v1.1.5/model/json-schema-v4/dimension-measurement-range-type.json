@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "string",
+  "enum": [
+    "INSIDE",
+    "OUTSIDE"
+  ],
+  "description": "- INSIDE: Object is within the measurement range\r\n- OUTSIDE: Object is outside of the measurement range",
+  "id": "DimensionMeasurementRangeType"
+}

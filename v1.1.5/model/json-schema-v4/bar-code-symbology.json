@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "string",
+  "enum": [
+    "CODE_128",
+    "DATA_MATRIX"
+  ],
+  "description": "Provides the valid symbologies of a barcode label",
+  "id": "BarCodeSymbology"
+}

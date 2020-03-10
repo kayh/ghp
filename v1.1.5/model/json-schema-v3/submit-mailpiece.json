@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-03/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "mailpieceId": {
+      "type": "string",
+      "description": "Represents the national identifier for the mailpiece item.",
+      "pattern": "(98|99)[0-9]{16}",
+      "required": true
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "[extension]\r\n\r\nTimestamp of data collection.",
+      "format": "date-time",
+      "required": true
+    },
+    "sourceId": {
+      "type": "string",
+      "description": "Refers to a module id as event-source.  ",
+      "pattern": "[A-Z]{3}[0-9]{2}",
+      "required": true
+    },
+    "mpAttr": {
+      "$ref": "mailpiece-attr.json",
+      "description": "The MailpieceAttrT type is assigned to the element mp_attr. It provides basic\r\nmailpiece related information:\r\n\r\n- the kind of the mail item\r\n- the mailclass of the mail item; important for the ED because it and may affect the address recognition\r\n- the scanned faces of the mail item. The FaceSetT type is assigned to faces and allows providing a sequence of faces. \r\n   The FaceSetT types allows to link a face with the corresponding image by a page attribute.\r\n- a preknowledge result if a barcode reader or some other type of Enrichment Device is directly attached to the MC.\r\n   This result will be in accordance with the result type specified in the IC-ED interface."
+    }
+  },
+  "additionalProperties": false,
+  "id": "SubmitMailpiece"
+}

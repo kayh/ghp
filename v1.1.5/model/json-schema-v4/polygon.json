@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "dot": {
+      "type": "array",
+      "items": {
+        "$ref": "polygon-dot.json"
+      }
+    }
+  },
+  "required": [
+    "dot"
+  ],
+  "additionalProperties": false,
+  "id": "Polygon"
+}

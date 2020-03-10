@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "mailpieceId": {
+      "type": "string",
+      "description": "Represents the national identifier for the mailpiece item.",
+      "pattern": "(98|99)[0-9]{16}"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "[extension]\n\nTimestamp of data collection.",
+      "format": "date-time"
+    },
+    "sourceId": {
+      "type": "string",
+      "description": "Refers to a module id as event-source.  ",
+      "pattern": "[A-Z]{3}[0-9]{2}"
+    }
+  },
+  "required": [
+    "mailpieceId",
+    "timestamp",
+    "sourceId"
+  ],
+  "additionalProperties": false,
+  "description": "This type provides the requester with the ability to obtain the results of an enrichment response. The RC\nreturns the document either on request of the MC or in an unsolicited fashion.\nThe MC expects to get all defined attributes for the corresponding mailpiece from the RC System.",
+  "id": "RequestMailpieceAttributes"
+}

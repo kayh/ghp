@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "object",
+  "properties": {
+    "emptyBinOccupied": {
+      "type": "boolean"
+    },
+    "binMultipleItemOccupied": {
+      "type": "boolean"
+    },
+    "frontOverlappingLimitExceeded": {
+      "type": "boolean"
+    },
+    "backOverlappingLimitExceeded": {
+      "type": "boolean"
+    },
+    "multipleItemsDetected": {
+      "type": "boolean"
+    },
+    "conveyingAidDetected": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "emptyBinOccupied",
+    "binMultipleItemOccupied",
+    "frontOverlappingLimitExceeded",
+    "backOverlappingLimitExceeded",
+    "multipleItemsDetected",
+    "conveyingAidDetected"
+  ],
+  "additionalProperties": false,
+  "description": "Doppelbelegung / Leerschalen-kontrolle\r\nemptyBinOccupied: Belegte Leerschale\r\nbinMultipleItemOccupied: Doppelbelegung - Erkennung der Schalenbelegung von DWS\r\nfrontOverlappingLimitExceeded: Überstand vorne zu groß\r\nbackOverlappingLimitExceeded: Überstand hinten zu groß\r\nmultipleItemsDetected: >= 2 Objekt erkannt\r\nconveyingAidDetected: Förderhilfe erkannt",
+  "id": "BinOccupancyState"
+}

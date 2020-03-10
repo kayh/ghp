@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {},
+  "type": "string",
+  "enum": [
+    "NO_BARCODE",
+    "DETECTED_AND_RECOGNIZED",
+    "DETECTED_AND_NOT_RECOGNIZED"
+  ],
+  "id": "BarCodeStatus"
+}
